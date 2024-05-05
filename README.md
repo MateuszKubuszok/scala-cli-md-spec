@@ -5,14 +5,19 @@ and each markdown document into a test suite.
 
 ## Usage
 
+Create `test-snippets.scala` (use at least Java 11):
+
 ```scala
 //> using scala 3.3.3
+//> using dep temurin:1.11.0.23
 //> using dep "com.kubuszok::scala-cli-md-spec:0.0.1"
 import com.kubuszok.scalaclimdspec
 @main def testSnippets(args: String*): Unit = scalaclimdspec.testSnippets(args.toArray) { cfg =>
   new scalaclimdspec.Runner.Default(cfg) // or provide your own :)
 }
 ```
+
+then run it with Scala CLI:
 
 ```bash
 # run all tests
