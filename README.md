@@ -10,7 +10,7 @@ Create `test-snippets.scala` (use at least Java 11):
 ```scala
 //> using scala 3.3.3
 //> using dep temurin:1.11.0.23
-//> using dep "com.kubuszok::scala-cli-md-spec:0.0.1"
+//> using dep "com.kubuszok::scala-cli-md-spec:0.0.2"
 import com.kubuszok.scalaclimdspec.*
 @main def run(args: String*): Unit = testSnippets(args.toArray) { cfg =>
   new Runner.Default(cfg) // or provide your own :)
@@ -29,7 +29,7 @@ scala-cli run test-snippets.scala -- --test-only="my-markdown.md#Section*" "$PWD
 To see how one can customize the code to e.g. inject variables or use the newest library version
 in an arbitrary markdown documentation generator see [Chimney's example](https://github.com/scalalandio/chimney/blob/29cd5048bee3b66c2d4d3d81dc17e0c0d5a4a128/scripts/test-snippets.scala).
 
-## Rules
+## Rules of the game
 
  1. each markdown is its own suite
  2. by default only Scala snipets with `//> using` are considered
