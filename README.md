@@ -9,7 +9,7 @@ Create `test-snippets.scala` (use at least Java 11):
 
 ```scala
 //> using scala 3.3.3
-//> using dep temurin:1.11.0.23
+//> using jvm temurin:1.11.0.23
 //> using dep "com.kubuszok::scala-cli-md-spec:0.0.2"
 import com.kubuszok.scalaclimdspec.*
 @main def run(args: String*): Unit = testSnippets(args.toArray) { cfg =>
