@@ -55,12 +55,12 @@ coursier launch com.kubuszok:scala-cli-md-spec_3:0.1.0 -M com.kubuszok.scalaclim
       standard error is expected to contain the content provided in these comments
  4. by default each snippet is standalone Scala snippet, it will be tested in a separate directory, containing
     a single `snippet.sc` file
- 5. if `--test-only` flag is used, only suites containing at least 1 matching snippet and within them only
-    the matching snippets will be run and displayed (but all markdowns still need to be read to find snippets
-    and match them against the pattern!)
     * multiple pieces of code can be combined into one multi-file snippet with:
       `// file: filename.scala - part of X example` syntax that would group all `X example` snippets, use
       `filename.scala` for this particular snippet, and place it within the same directory as others
+ 5. if `--test-only` flag is used, only suites containing at least 1 matching snippet and within them only
+    the matching snippets will be run and displayed (but all markdowns still need to be read to find snippets
+    and match them against the pattern!)
 
 ## Why though
 
