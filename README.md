@@ -12,7 +12,7 @@ Create `test-snippets.scala` (use at least Java 11):
 ```scala
 //> using scala 3.3.3
 //> using jvm temurin:1.11.0.23
-//> using dep "com.kubuszok::scala-cli-md-spec:0.0.3"
+//> using dep "com.kubuszok::scala-cli-md-spec:0.1.0"
 import com.kubuszok.scalaclimdspec.*
 @main def run(args: String*): Unit = testSnippets(args.toArray) { cfg =>
   new Runner.Default(cfg) // or provide your own :)
@@ -37,9 +37,9 @@ If you are not providing any modification, you can run it straight from the [Cou
 
 ```bash
 # run all tests
-coursier launch com.kubuszok:scala-cli-md-spec_3:0.0.3 -M com.kubuszok.scalaclimdspec.testSnippets -- "$PWD/docs"
+coursier launch com.kubuszok:scala-cli-md-spec_3:0.1.0 -M com.kubuszok.scalaclimdspec.testSnippets -- "$PWD/docs"
 # run only tests from Section in my-markdown.md
-coursier launch com.kubuszok:scala-cli-md-spec_3:0.0.3 -M com.kubuszok.scalaclimdspec.testSnippets -- --test-only="my-markdown.md#Section*" "$PWD/docs"
+coursier launch com.kubuszok:scala-cli-md-spec_3:0.1.0 -M com.kubuszok.scalaclimdspec.testSnippets -- --test-only="my-markdown.md#Section*" "$PWD/docs"
 ```
 
 ## Rules of the game
