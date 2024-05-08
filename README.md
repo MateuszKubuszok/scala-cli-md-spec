@@ -47,18 +47,102 @@ coursier launch com.kubuszok:scala-cli-md-spec_3:0.1.0 -M com.kubuszok.scalaclim
  1. each markdown is its own suite
  2. by default only Scala snipets with `//> using` are considered
     * other snippets are considered pseudocode and are ignored
+
+      ```scala
+      // will be tested
+      //> using scala 3.3.3
+      println("yolo")
+      ```
+
+      ```scala
+      // will NOT be tested
+      println("yolo")
+      ```
+
  3. by default snippets are tested for the lack of errors
     * by the lack of errors we mean that Scala CLI returns `0`
+
+      ```scala
+      // should pass
+      //> using scala 3.3.3
+      println("yolo")
+      ```
+
+      ```scala
+      // thou shall NOT pass!
+      //> using scala 3.3.3
+      throw Exception("yolo")
+      ```
+
     * if there is `// expected output:` followed by inline comments, snippet will be expected to succeed and
       standard output is expected to contain the content provided in these comments
+
+      ```scala
+      // should pass
+      //> using scala 3.3.3
+      println("yolo")
+      // expected output:
+      // yolo
+      ```
+      
+      ```scala
+      // thou shall NOT pass!
+      //> using scala 3.3.3
+      println("yolo")
+      // expected output:
+      // eee macarena!
+      ```
+
     * if there is `// expected error:` followed by inline comments, snippet will be expected to fails and
       standard error is expected to contain the content provided in these comments
+
+      ```scala
+      // should pass
+      //> using scala 3.3.3
+      throw Exception("yolo")
+      // expected error:
+      // yolo
+      ```
+
+      ```scala
+      // should pass
+      //> using scala 3.3.3
+      summon[String]
+      // expected error:
+      // No given instance of type String was found
+      ```
+      
+      ```scala
+      // thou shall NOT pass!
+      //> using scala 3.3.3
+      println("yolo")
+      // expected error:
+      // yolo
+      ```
+
  4. by default each snippet is standalone Scala snippet, it will be tested in a separate directory, containing
     a single `snippet.sc` file
     * multiple pieces of code can be combined into one multi-file snippet with:
       `// file: filename.scala - part of X example` syntax that would group all `X example` snippets, use
       `filename.scala` for this particular snippet, and place it within the same directory as others
- 5. if `--test-only` flag is used, only suites containing at least 1 matching snippet and within them only
+
+      ```scala
+      // file: model.scala - part of multi-file
+      case class Model(a: Int)
+      ```
+
+      ```scala
+      // file: example.sc - part of multi-file
+      println(Model(10))
+      // expected output:
+      // Model(10)
+      ```
+
+      With multi-file `//> using` is not required to run the snippet and to succeed, like with normal Scala CLI
+      app, there should be either exactly one `.sc` file or only `.scala` files with exactly one explicitly defined
+      main.
+
+ 5. if `--test-only` flag is used, only suites containing at least 1 matching snippet and, within them, only
     the matching snippets will be run and displayed (but all markdowns still need to be read to find snippets
     and match them against the pattern!)
 
