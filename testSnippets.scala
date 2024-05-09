@@ -208,14 +208,15 @@ object Snippet {
 
     import Mode.*
 
-    val start = "```scala" // TODO: ```java, possible crap after scala/java like mdoc
-    val end = "```"
+
+    val start = raw"(\s*)```(scala|java)(.*)".r
+    val end = raw"\s*```\*"
     val sectionName = "#+(.+)".r
 
     def loop(remainingContent: List[(String, Int)], location: Location, mode: Mode, result: Vector[Snippet]): List[Snippet] =
       (remainingContent, mode) match {
         // ``` terminates snippet reading
-        case ((line, _) :: lines, Reading(indent, content)) if line.trim() == end =>
+        case ((end(), _) :: lines, Reading(indent, content)) =>
           loop(
             lines,
             location,
@@ -231,8 +232,8 @@ object Snippet {
             result
           )
         // ```scala found, we're reading snippet starting from the next line
-        case ((line, lineNo) :: lines, Awaiting) if line.trim() == start =>
-          loop(lines, location.next(lineNo), Reading(line.indexOf(start), Vector.empty), result)
+        case ((start(indent, _, _), lineNo) :: lines, Awaiting) =>
+          loop(lines, location.next(lineNo), Reading(indent.length(), Vector.empty), result)
         // # section name
         case ((sectionName(section), lineNo) :: lines, Awaiting) =>
           loop(lines, mkLocation(section.trim(), lineNo), Awaiting, result)
@@ -278,7 +279,12 @@ trait Runner:
       * @return the result of the Scala CLI run
       */
     def run(): RunResult =
-      RunResult("scala-cli", "run", File(s"${tmpDir.getPath()}/${snippet.dirName}").getPath())
+      snippet.content match
+        case Snippet.Content.Multiple(files) if files.keys.exists(_.endsWith(".test.scala")) =>
+          // run test only if there is at least 1 .test.scala snippet
+          RunResult("scala-cli", "test", File(s"${tmpDir.getPath()}/${snippet.dirName}").getPath())
+        case _ =>
+          RunResult("scala-cli", "run", File(s"${tmpDir.getPath()}/${snippet.dirName}").getPath())
 
     /** Called after [[Snippet]] creation, allows adjusting its content e.g. interpolating templates or adding directoves. */
     def adjusted: Snippet
