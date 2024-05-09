@@ -329,7 +329,7 @@ object Runner:
     *
     * It:
     *  - does not modify single snippet
-    *  - TODO: aggregate snippets by "// file: sdsdf - part of example name"
+    *  - aggregates snippets by "// file: [file name] - part of [example name]"
     *  - ignores snippets which do not contains a single "// using"
     *  - ignores snippets containing libraryDependencies (to not run sbt examples)
     *  - tests for errors if there is any "// expected error:""
@@ -413,7 +413,7 @@ case class Suite(name: String, snippets: List[Snippet]) {
         import snippet.{hint, stableName}
         def previewSnippet = snippet.content match
           case Snippet.Content.Single(content) => content
-          case Snippet.Content.Multiple(files) => files.values.mkString("\n")
+          case Snippet.Content.Multiple(files) => files.values.map(_.content).mkString("\n")
         snippet.howToRun match
           case Runner.Strategy.ExpectSuccess(outputs) =>
             val snippetDir = snippet.save()
