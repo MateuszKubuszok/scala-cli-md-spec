@@ -45,7 +45,7 @@ coursier launch com.kubuszok:scala-cli-md-spec_3:0.1.0 -M com.kubuszok.scalaclim
 ## Rules of the game
 
  1. each markdown is its own suite
- 2. by default only Scala snipets with `//> using` are considered
+ 2. by default only Scala (and Java) snipets with `//> using` are considered
     * other snippets are considered pseudocode and are ignored
 
       ```scala
@@ -141,6 +141,12 @@ coursier launch com.kubuszok:scala-cli-md-spec_3:0.1.0 -M com.kubuszok.scalaclim
       With multi-file `//> using` is not required to run the snippet and to succeed, like with normal Scala CLI
       app, there should be either exactly one `.sc` file or only `.scala` files with exactly one explicitly defined
       main.
+
+    * if at least one file in multifile snippet has a name ending with `.test.scala` then `scala-cli test [dirname]`
+      will be used unstead (useful for e.g. defining macros in compile scope and showing them in test scope since
+      Scala CLI is NOT multi modular)
+
+    * Java snippets should not only use `java` in markdown, but also define `// file: filename.java - part of ...`
 
  5. if `--test-only` flag is used, only suites containing at least 1 matching snippet and, within them, only
     the matching snippets will be run and displayed (but all markdowns still need to be read to find snippets

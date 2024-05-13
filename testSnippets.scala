@@ -210,13 +210,13 @@ object Snippet {
 
 
     val start = raw"(\s*)```(scala|java)(.*)".r
-    val end = raw"\s*```\*"
+    val end = raw"(\s*)```\s*".r
     val sectionName = "#+(.+)".r
 
     def loop(remainingContent: List[(String, Int)], location: Location, mode: Mode, result: Vector[Snippet]): List[Snippet] =
       (remainingContent, mode) match {
         // ``` terminates snippet reading
-        case ((end(), _) :: lines, Reading(indent, content)) =>
+        case ((end(_), _) :: lines, Reading(indent, content)) =>
           loop(
             lines,
             location,
@@ -269,7 +269,9 @@ trait Runner:
       val snippetDir = File(s"${tmpDir.getPath()}/${snippet.dirName}")
       snippetDir.mkdirs()
       snippet.content.fileToContentMap.foreach { case (fileName, Snippet.Content.Single(content)) =>
-        Files.writeString(File(s"${snippetDir.getPath()}/$fileName").toPath(), content)
+        val file = File(s"${snippetDir.getPath()}/$fileName")
+        file.getParentFile().mkdirs() // in case file was named `packagename/file.scala` or similar
+        Files.writeString(file.toPath(), content)
       }
       snippetDir
     }
