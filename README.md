@@ -212,4 +212,10 @@ of the fact, it even supports running snippets in [markdown files](https://scala
 Its markdown support has a downside, however, because this mode considers all snippets to be defined in the same scope (same Scala version,
 same libraries, same compiler options - different `//> using` classes are appended and may override conflicting options).
 
-This library extracts snippets from markdown files, put them into separate `/tmp` subdirectories, and runs as standalone snippets - allowing each snippet to be self-contained, reproducible example.
+This library:
+
+ - extracts snippets from markdown files
+ - puts them into separate `/tmp` subdirectories
+ - and runs as standalone snippets
+
+allowing each snippet to be a self-contained, reproducible example.
