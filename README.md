@@ -144,7 +144,7 @@ coursier launch com.kubuszok:scala-cli-md-spec_3:0.1.1 -M com.kubuszok.scalaclim
 
       ```scala
       // file: macro.scala - part of macro example
-      // using scala 3.3.3
+      //> using scala 3.3.3
 
       object MyMacro:
         inline def apply[A](a: A): Unit = ${ applyImpl[A]('a) }
